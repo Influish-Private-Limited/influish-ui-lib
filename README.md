@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # InfluishTheme UI Library
 
 InfluishTheme is a premium, production-ready React component library designed for high-performance dashboards and modern web applications. It features a robust design system, full dark mode support, and a highly flexible composition-based API.
@@ -143,3 +144,6 @@ Now you can use Influish tokens directly in your HTML:
 
 ## 📄 License
 MIT © Influish
+=======
+# influish-ui-library
+>>>>>>> 39d88e87ece8d4697b9125f1f202cb5577a2f3fd
