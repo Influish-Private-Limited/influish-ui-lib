@@ -1,0 +1,10 @@
+import type { ThemeBorder, ThemeColors, ThemeTypography, ThemeSpacing, ThemeBorderRadius, ThemeShadow, ThemeTransition, ThemeZIndex, ThemeModal } from "./types";
+export declare const colors: ThemeColors;
+export declare const typography: ThemeTypography;
+export declare const spacing: ThemeSpacing;
+export declare const border: ThemeBorder;
+export declare const borderRadius: ThemeBorderRadius;
+export declare const shadow: ThemeShadow;
+export declare const transition: ThemeTransition;
+export declare const zIndex: ThemeZIndex;
+export declare const modal: ThemeModal;

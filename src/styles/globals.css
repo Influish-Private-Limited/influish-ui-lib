@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* 1. Tell Tailwind v4 to scan your component files */
+@source "../components/**/*.{js,ts,jsx,tsx}";
+
+@theme {
+  /* Colors - Primary (Indigo) */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+
+  /* Colors - Secondary */
+  --color-secondary-50: #fdf4ff;
+  --color-secondary-500: #d946ef;
+
+  /* Colors - Green (Success) */
+  --color-green-50: #f0fdf4;
+  --color-green-500: #22c55e;
+  --color-green-800: #166534;
+
+  /* Colors - Red (Error) */
+  --color-red-50: #fff1f2;
+  --color-red-500: #f43f5e;
+  --color-red-800: #991b1b;
+
+  /* Colors - Orange (Warning) */
+  --color-orange-50: #fff7ed;
+  --color-orange-500: #f97316;
+  --color-orange-800: #9a3412;
+
+  /* Colors - Blue (Info) */
+  --color-blue-50: #eff6ff;
+  --color-blue-500: #3b82f6;
+  --color-blue-800: #1e40af;
+
+  /* Semantic - Light */
+  --color-bg-default: #f8fafc;
+  --color-bg-paper: #ffffff;
+  --color-bg-subtle: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-disabled: #cbd5e1;
+  --color-text-inverse: #ffffff;
+  --color-border-default: #e2e8f0;
+  --color-border-focus: #6366f1;
+  --color-border-error: #f43f5e;
+  --color-action-primary: #4f46e5;
+
+  /* Success/Error Semantic Mapping */
+  --color-success-50: var(--color-green-50);
+  --color-success-500: var(--color-green-500);
+  --color-error-50: var(--color-red-50);
+  --color-error-500: var(--color-red-500);
+
+  /* Shadows & Radius */
+  --radius-it-sm: 0.25rem;
+  --radius-it-md: 0.5rem;
+  --radius-it-lg: 0.75rem;
+  --radius-it-xl: 1rem;
+  --radius-it-2xl: 1.5rem;
+
+  --shadow-it-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-it-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-it-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-it-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-it-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Modal Sizes */
+  --width-it-modal-sm: 400px;
+  --width-it-modal-md: 600px;
+  --width-it-modal-lg: 800px;
+  --width-it-modal-xl: 1140px;
+}
+
+/* Base Variables for dynamic theming (ThemeProvider) */
+:root {
+  --it-primary-500: 99, 102, 241;
+  --it-bg-default: 248, 250, 252;
+  --it-bg-paper: 255, 255, 255;
+  --it-bg-subtle: 241, 245, 249;
+  --it-text-primary: 15, 23, 42;
+  --it-text-secondary: 100, 116, 139;
+  --it-border-default: 226, 232, 240;
+  --it-action-primary: 79, 70, 229;
+}
+
+[data-theme="dark"] {
+  --it-bg-default: 15, 23, 42;
+  --it-bg-paper: 30, 41, 59;
+  --it-bg-subtle: 51, 65, 85;
+  --it-text-primary: 248, 250, 252;
+  --it-text-secondary: 148, 163, 184;
+  --it-border-default: 51, 65, 85;
+  --it-action-primary: 99, 102, 241;
+}
+
+@layer base {
+  * {
+    @apply border-border-default;
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-bg-default text-text-primary antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply bg-transparent outline-none;
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.2);
+    color: inherit;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
