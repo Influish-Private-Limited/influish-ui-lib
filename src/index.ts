@@ -81,6 +81,12 @@ export type { GridProps, GridItemProps, ContainerProps } from "./components/Grid
 export { Navbar } from "./components/Navbar/Navbar";
 export type { NavbarProps } from "./components/Navbar/Navbar";
 
+export { default as NavbarDropdown } from "./components/Navbar/NavDropdown";
+export type {
+  NavbarDropdownProps,
+  DropdownItem,
+} from "./components/Navbar/NavDropdown";
+
 // Components — Sidebar
 export { Sidebar } from "./components/Sidebar/Sidebar";
 export type { SidebarProps } from "./components/Sidebar/Sidebar";

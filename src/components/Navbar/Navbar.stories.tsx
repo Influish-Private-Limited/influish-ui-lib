@@ -20,8 +20,25 @@ const meta: Meta<typeof Navbar> = {
 };
 
 export default meta;
-
 type Story = StoryObj<typeof Navbar>;
+
+const creatorItems = [
+  { title: "Campaign Dashboard", description: "Manage all creator campaigns", href: "#dashboard" },
+  { title: "Analytics", description: "Track growth and engagement", href: "#analytics" },
+  { title: "Brand Deals", description: "Discover sponsorship opportunities", href: "#deals" },
+];
+
+const businessItems = [
+  { title: "Find Creators", description: "Search influencers by niche", href: "#find-creators" },
+  { title: "Campaign Management", description: "Launch and monitor campaigns", href: "#campaigns" },
+];
+
+const agencyItems = [
+  { title: "Team Workspace", description: "Manage multiple clients", href: "#workspace" },
+  { title: "Advanced Reporting", description: "Export detailed campaign reports", href: "#reports" },
+];
+
+// ─── Default story ─────────────────────────────────────────────────────────────
 
 export const Default: Story = {
   args: {
@@ -31,62 +48,13 @@ export const Default: Story = {
       </Button>
     ),
 
+    // Full mobile menu panel
     mobileMenu: (
-      <div className="flex flex-col gap-5">
-        {/* <nav className="flex flex-col gap-4">
-          <a href="#creators">For Creators</a>
-          <a href="#business">For Business</a>
-          <a href="#agency">For Agency</a>
-        </nav> */}
-
-        <nav className="flex flex-col gap-2">
-
-          <NavbarDropdown
-            mobile
-            label="For Creators"
-            items={[
-              {
-                title: "Campaign Dashboard",
-                description: "Manage creator campaigns",
-                href: "#dashboard",
-              },
-              {
-                title: "Analytics",
-                description: "Track engagement",
-                href: "#analytics",
-              },
-            ]}
-          />
-
-          <NavbarDropdown
-            mobile
-            label="For Business"
-            items={[
-              {
-                title: "Find Creators",
-                description: "Search influencers",
-                href: "#creators",
-              },
-              {
-                title: "Campaign Management",
-                description: "Launch campaigns",
-                href: "#campaigns",
-              },
-            ]}
-          />
-
-          <NavbarDropdown
-            mobile
-            label="For Agency"
-            items={[
-              {
-                title: "Workspace",
-                description: "Manage clients",
-                href: "#workspace",
-              },
-            ]}
-          />
-
+      <div className="flex flex-col gap-4 p-4">
+        <nav className="flex flex-col gap-1">
+          <NavbarDropdown mobile label="For Creators" items={creatorItems} />
+          <NavbarDropdown mobile label="For Business" items={businessItems} />
+          <NavbarDropdown mobile label="For Agency"   items={agencyItems} />
         </nav>
 
         <Button variant="ghost" size="sm" className="w-full">
@@ -99,74 +67,17 @@ export const Default: Story = {
       <>
         {/* Brand */}
         <Navbar.Brand>
-          <a href="/" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-1">
             <Navbar.BrandIcon className="h-10 w-10 shrink-0" />
-            <span className="hidden sm:block text-lg font-bold"> Influish </span>
+            <Navbar.BrandText className="text-lg font-bold">Influish</Navbar.BrandText>
           </a>
         </Navbar.Brand>
 
-        {/* Desktop Nav */}
-        {/* <Navbar.Nav>
-          <a href="#creators">For Creators</a>
-          <a href="#business">For Business</a>
-          <a href="#agency">For Agency</a>
-        </Navbar.Nav> */}
-
+        {/* Desktop nav — must use Navbar.Nav */}
         <Navbar.Nav>
-
-          <NavbarDropdown
-            label="For Creators"
-            items={[
-              {
-                title: "Campaign Dashboard",
-                description: "Manage all creator campaigns",
-                href: "#dashboard",
-              },
-              {
-                title: "Analytics",
-                description: "Track growth and engagement",
-                href: "#analytics",
-              },
-              {
-                title: "Brand Deals",
-                description: "Discover sponsorship opportunities",
-                href: "#deals",
-              },
-            ]}
-          />
-
-          <NavbarDropdown
-            label="For Business"
-            items={[
-              {
-                title: "Find Creators",
-                description: "Search influencers by niche",
-                href: "#find-creators",
-              },
-              {
-                title: "Campaign Management",
-                description: "Launch and monitor campaigns",
-                href: "#campaigns",
-              },
-            ]}
-          />
-
-          <NavbarDropdown
-            label="For Agency"
-            items={[
-              {
-                title: "Team Workspace",
-                description: "Manage multiple clients",
-                href: "#workspace",
-              },
-              {
-                title: "Advanced Reporting",
-                description: "Export detailed campaign reports",
-                href: "#reports",
-              },
-            ]}
-          />
-
+          <NavbarDropdown label="For Creators" items={creatorItems} />
+          <NavbarDropdown label="For Business" items={businessItems} />
+          <NavbarDropdown label="For Agency"   items={agencyItems} />
         </Navbar.Nav>
 
 
@@ -178,5 +89,32 @@ export const Default: Story = {
         </Navbar.End>
       </>
     ),
+  },
+};
+
+// ─── Sticky variant ────────────────────────────────────────────────────────────
+
+export const Sticky: Story = {
+  args: {
+    ...Default.args,
+    sticky: true,
+  },
+};
+
+// ─── No border ────────────────────────────────────────────────────────────────
+
+export const NoBorder: Story = {
+  args: {
+    ...Default.args,
+    bordered: false,
+  },
+};
+
+// ─── Constrained width ────────────────────────────────────────────────────────
+
+export const MaxWidth: Story = {
+  args: {
+    ...Default.args,
+    maxWidth: "1280px",
   },
 };
