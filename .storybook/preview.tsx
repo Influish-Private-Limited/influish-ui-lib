@@ -1,5 +1,7 @@
-import React from 'react';
+import React from "react";
 import type { Preview } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+
 import { ThemeProvider } from "../src/theme/ThemeProvider";
 import "../src/styles/globals.css";
 
@@ -12,13 +14,22 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+
+    viewport: {
+      viewports: INITIAL_VIEWPORTS,
+    },
   },
+
   decorators: [
-    (Story) => (
+    (Story, context) => (
       <ThemeProvider>
-        <div style={{ padding: '2rem' }}>
+        {context.parameters.layout === "fullscreen" ? (
           <Story />
-        </div>
+        ) : (
+          <div style={{ padding: "2rem" }}>
+            <Story />
+          </div>
+        )}
       </ThemeProvider>
     ),
   ],

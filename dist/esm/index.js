@@ -3975,20 +3975,68 @@ const GridItem = ({ span = 12, sm, md, lg, xl, className, children, style, ...pr
         }, ...props, children: children }));
 };
 
-const NavbarBrand = ({ className, ...props }) => (jsx("a", { className: cn("text-lg font-bold text-text-primary no-underline flex items-center gap-3 tracking-tight", className), ...props }));
-const NavbarNav = ({ className, ...props }) => (jsx("nav", { className: cn("flex items-center gap-3 flex-1 justify-center px-4 max-lg:hidden", className), ...props }));
-const NavbarEnd = ({ className, ...props }) => (jsx("div", { className: cn("flex items-center gap-3 justify-end", className), ...props }));
-const Navbar = ({ sticky, bordered, maxWidth, className, children, style, ...props }) => {
-    return (jsx("header", { className: cn("flex items-center justify-between px-6 py-2 h-20 bg-bg-paper border-b border-border-default transition-all duration-300 w-full box-border", sticky && "sticky top-0 backdrop-blur-md", bordered && "border-b border-border-default", className), style: {
+// ─── Sub-components ──────────────────────────────────────────────────────────
+const NavbarBrand = ({ className, ...props }) => (jsx("div", { className: cn("flex min-w-0 shrink-0 items-center gap-3 text-lg font-bold tracking-tight text-text-primary text-[var(--it-text-primary,#111)] no-underline lg:min-w-[160px]", className), ...props }));
+NavbarBrand.displayName = "NavbarBrand";
+const NavbarBrandText = ({ className, ...props }) => (jsx("span", { className: cn("hidden lg:inline", className), ...props }));
+NavbarBrandText.displayName = "NavbarBrandText";
+const NavbarNav = ({ className, ...props }) => (jsx("nav", { className: cn("hidden lg:flex items-center justify-center gap-6 flex-1 px-6", className), ...props }));
+NavbarNav.displayName = "NavbarNav";
+const NavbarEnd = ({ className, ...props }) => (jsx("div", { className: cn("hidden lg:flex items-center gap-3 justify-end shrink-0", className), ...props }));
+NavbarEnd.displayName = "NavbarEnd";
+const HamburgerIcon = () => (jsxs("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: "1.8", className: "h-6 w-6", "aria-hidden": "true", children: [jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M4 7H20" }), jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M4 12H20" }), jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M4 17H20" })] }));
+const CloseIcon = () => (jsx("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: "1.8", className: "h-6 w-6", "aria-hidden": "true", children: jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M6 6L18 18M6 18L18 6" }) }));
+const NavbarBrandIcon = ({ className, children, ...props }) => (jsx("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor", className: cn("h-6 w-6", className), ...props, children: children ?? (
+    // Default: checkmark-circle (original v1 icon)
+    jsx("path", { d: "M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM10.0001 16L7.0001 13L8.4101 11.59L10.0001 13.17L15.5901 7.58002L17.0001 8.99002L10.0001 16Z" })) }));
+NavbarBrandIcon.displayName = "NavbarBrandIcon";
+// Helpers 
+/** Recursively find a child with a matching displayName. */
+function pickChild(children, displayName) {
+    let found = null;
+    React.Children.forEach(children, (child) => {
+        if (found || !React.isValidElement(child))
+            return;
+        if (child.type?.displayName === displayName) {
+            found = child;
+            return;
+        }
+        if (child.props?.children) {
+            const nested = pickChild(child.props.children, displayName);
+            if (nested)
+                found = nested;
+        }
+    });
+    return found;
+}
+const Navbar = ({ sticky, bordered, maxWidth, className, children, style, mobileMenu, mobileAction, ...props }) => {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+    const brandSection = pickChild(children, "NavbarBrand");
+    const navSection = pickChild(children, "NavbarNav");
+    const endSection = pickChild(children, "NavbarEnd");
+    return (jsxs("header", { className: cn("relative overflow-visible w-full h-20 px-6 py-2", "flex items-center", "bg-[var(--it-bg-paper,#fff)]", "transition-all duration-300", bordered && "border-b border-[var(--it-border-default,#e5e7eb)]", sticky && "sticky top-0 backdrop-blur-md", className), style: {
             zIndex: "var(--it-z-sticky, 200)",
             ...(sticky ? { backgroundColor: "rgb(var(--it-bg-paper) / 0.85)" } : {}),
-            ...style
-        }, ...props, children: jsx("div", { className: "w-full flex items-center justify-between h-full mx-auto max-sm:px-0", style: maxWidth ? { maxWidth } : undefined, children: children }) }));
+            ...style,
+        }, ...props, children: [jsx("div", { className: "mx-auto h-full w-full overflow-visible px-0 sm:px-2", style: maxWidth ? { maxWidth } : undefined, children: jsxs("div", { className: "grid h-full w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 overflow-visible lg:flex lg:justify-between", children: [jsx("div", { className: "flex min-w-0 items-center justify-start lg:shrink-0", children: brandSection }), jsx("div", { className: "flex items-center justify-center lg:hidden", children: jsx("button", { type: "button", className: "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl p-0 text-text-primary transition hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus", "aria-label": isMobileMenuOpen ? "Close menu" : "Open menu", "aria-expanded": isMobileMenuOpen, onClick: () => setIsMobileMenuOpen((prev) => !prev), children: isMobileMenuOpen ? jsx(CloseIcon, {}) : jsx(HamburgerIcon, {}) }) }), jsx("div", { className: "hidden min-w-0 flex-1 items-center justify-center overflow-visible lg:flex", children: navSection }), jsxs("div", { className: "flex shrink-0 items-center justify-end gap-2 overflow-visible lg:gap-3", children: [mobileAction && (jsx("div", { className: "inline-flex shrink-0 items-center lg:hidden", children: mobileAction })), endSection] })] }) }), jsx("div", { className: cn("absolute top-full left-0 w-full z-50 lg:hidden", "bg-[var(--it-bg-paper,#fff)]", "overflow-hidden transition-all duration-300", bordered && "border-b border-[var(--it-border-default,#e5e7eb)]", isMobileMenuOpen ? "pointer-events-auto max-h-[500px] opacity-100" : "pointer-events-none max-h-0 opacity-0"), "aria-hidden": !isMobileMenuOpen, children: jsx("div", { className: "px-4 py-5 sm:px-6", children: mobileMenu }) })] }));
 };
+Navbar.BrandIcon = NavbarBrandIcon;
 Navbar.Brand = NavbarBrand;
+Navbar.BrandText = NavbarBrandText;
 Navbar.Nav = NavbarNav;
 Navbar.End = NavbarEnd;
 Navbar.displayName = "Navbar";
+
+const ChevronIcon = ({ className }) => (jsx("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: "2", className: cn("transition-transform duration-200 shrink-0", className), children: jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M19 9l-7 7-7-7" }) }));
+const NavbarDropdown = ({ label, items, className, mobile = false }) => {
+    const [open, setOpen] = useState(false);
+    // ─── MOBILE accordion ──────────────────────────────────────────────────────
+    if (mobile) {
+        return (jsxs("div", { className: "w-full border-b border-[var(--it-border-default,#e5e7eb)] pb-1", children: [jsxs("button", { onClick: () => setOpen(!open), className: "flex w-full items-center justify-between py-3 text-left text-sm font-medium", "aria-expanded": open, children: [jsx("span", { children: label }), jsx(ChevronIcon, { className: cn(open && "rotate-180") })] }), jsx("div", { className: cn("overflow-hidden transition-all duration-300", open ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"), children: jsx("div", { className: "mt-1 flex flex-col gap-0.5 pl-2 pb-2", children: items.map((item) => (jsxs("a", { href: item.href, className: "flex items-start gap-3 rounded-xl p-3 text-sm transition-all hover:bg-black/5", children: [item.icon && jsx("span", { className: "mt-0.5 shrink-0 opacity-60", children: item.icon }), jsxs("div", { children: [jsx("div", { className: "font-medium", children: item.title }), item.description && (jsx("div", { className: "mt-0.5 text-xs opacity-60", children: item.description }))] })] }, item.href))) }) })] }));
+    }
+    // ─── DESKTOP hover dropdown ────────────────────────────────────────────────
+    return (jsxs("div", { className: cn("relative group", className), children: [jsxs("button", { className: "flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-black/5 whitespace-nowrap", children: [label, jsx(ChevronIcon, { className: "group-hover:rotate-180" })] }), jsx("div", { className: "absolute left-0 top-full h-4 w-full" }), jsx("div", { className: cn("absolute left-1/2 -translate-x-1/2 top-[calc(100%+16px)] z-[999]", "w-[260px]", "rounded-2xl border border-[var(--it-border-default,#e5e7eb)]", "bg-[var(--it-bg-paper,#ffffff)] shadow-xl", "p-2", "pointer-events-none opacity-0 translate-y-2", "transition-all duration-200 ease-out", "group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0"), children: jsx("div", { className: "flex flex-col gap-0.5", children: items.map((item) => (jsxs("a", { href: item.href, className: "flex items-start gap-3 rounded-xl p-3 transition-all duration-150 hover:bg-black/5", children: [item.icon && jsx("span", { className: "mt-0.5 shrink-0 opacity-60", children: item.icon }), jsxs("div", { children: [jsx("div", { className: "text-sm font-medium text-[var(--it-text-primary,#111)]", children: item.title }), item.description && (jsx("div", { className: "mt-0.5 text-xs text-[var(--it-text-secondary,#666)]", children: item.description }))] })] }, item.href))) }) })] }));
+};
 
 const SidebarHeader = ({ className, ...props }) => (jsx("div", { className: cn("p-5 border-b shrink-0 group-data-[collapsed=true]:justify-center group-data-[collapsed=true]:py-4 flex items-center gap-3", className), ...props }));
 const SidebarNav = ({ className, ...props }) => (jsx("nav", { className: cn("flex-1 overflow-y-auto py-3 px-3", className), ...props }));
@@ -4115,5 +4163,5 @@ const SnackbarItem = ({ msg, onDismiss }) => {
     return (jsxs("div", { className: cn("flex items-start gap-2.5 min-w-[18rem] max-w-[26rem] p-3 px-4 border rounded-it-lg shadow-it-lg pointer-events-auto font-base text-sm animate-slide-in-right", isLeaving && "opacity-0 translate-x-4 transition-all duration-400", typeClasses[msg.type]), children: [jsxs("span", { className: "shrink-0 mt-0.5", children: [msg.type === "success" && "✅", msg.type === "error" && "❌", msg.type === "warning" && "⚠️", msg.type === "info" && "ℹ️"] }), jsx("span", { className: "flex-1 font-medium leading-normal", children: msg.message }), jsx("button", { onClick: handleDismiss, className: "inline-flex items-center justify-center shrink-0 w-6 h-6 rounded-it-sm bg-transparent border-none text-inherit cursor-pointer opacity-60 transition-all hover:bg-black/5 hover:opacity-100", children: "\u00D7" })] }));
 };
 
-export { Button, Card, CardBody, CardFooter, CardHeader, CardMedia, Container, Dialog, Grid, GridItem, Input, Modal, Navbar, Select, Sidebar, SnackbarContainer, SnackbarItem, TextField, ThemeContext, ThemeProvider, Tooltip, cn, cssTransitions, darkTheme, defaultTheme, email, lightTheme, maxLength, mergeTheme, minLength, motionVariants, numeric, pattern, required, url, useMediaQuery, useSnackbar, useTheme, validate };
+export { Button, Card, CardBody, CardFooter, CardHeader, CardMedia, Container, Dialog, Grid, GridItem, Input, Modal, Navbar, NavbarDropdown, Select, Sidebar, SnackbarContainer, SnackbarItem, TextField, ThemeContext, ThemeProvider, Tooltip, cn, cssTransitions, darkTheme, defaultTheme, email, lightTheme, maxLength, mergeTheme, minLength, motionVariants, numeric, pattern, required, url, useMediaQuery, useSnackbar, useTheme, validate };
 //# sourceMappingURL=index.js.map

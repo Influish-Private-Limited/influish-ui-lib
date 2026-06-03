@@ -4,7 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
-import tailwindcss from "tailwindcss";
+import tailwindcssPostcss from "@tailwindcss/postcss";
 import autoprefixer from "autoprefixer";
 import { readFileSync } from "fs";
 
@@ -34,8 +34,9 @@ const basePlugins = [
       generateScopedName: "[name]__[local]___[hash:base64:5]",
     },
     extract: true, // separate CSS file (best for libraries)
-    minimize: true,
+    minimize: false,
     sourceMap: true,
+    plugins: [tailwindcssPostcss(), autoprefixer()],
   }),
 
   typescript({

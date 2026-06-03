@@ -8,6 +8,9 @@ const meta: Meta<typeof Navbar> = {
   title: "Components/Navbar",
   component: Navbar,
   tags: ["autodocs"],
+  parameters: {
+    layout: "fullscreen",
+  },
   argTypes: {
     sticky: { control: "boolean" },
     bordered: { control: "boolean" },

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import React__default, { ReactNode } from 'react';
 import { ClassValue } from 'clsx';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 
 type ColorScale = {
     50: string;
@@ -507,15 +508,35 @@ interface NavbarProps extends React__default.HTMLAttributes<HTMLElement> {
     bordered?: boolean;
     /** Inner content max width */
     maxWidth?: string;
+    mobileMenu?: React__default.ReactNode;
+    mobileAction?: React__default.ReactNode;
 }
-declare const NavbarBrand: React__default.FC<React__default.AnchorHTMLAttributes<HTMLAnchorElement>>;
+declare const NavbarBrand: React__default.FC<React__default.HTMLAttributes<HTMLDivElement>>;
+declare const NavbarBrandText: React__default.FC<React__default.HTMLAttributes<HTMLSpanElement>>;
 declare const NavbarNav: React__default.FC<React__default.HTMLAttributes<HTMLElement>>;
 declare const NavbarEnd: React__default.FC<React__default.HTMLAttributes<HTMLDivElement>>;
+declare const NavbarBrandIcon: React__default.FC<React__default.SVGProps<SVGSVGElement>>;
 declare const Navbar: React__default.FC<NavbarProps> & {
+    BrandIcon: typeof NavbarBrandIcon;
     Brand: typeof NavbarBrand;
+    BrandText: typeof NavbarBrandText;
     Nav: typeof NavbarNav;
     End: typeof NavbarEnd;
 };
+
+interface DropdownItem {
+    title: string;
+    description?: string;
+    href: string;
+    icon?: React__default.ReactNode;
+}
+interface NavbarDropdownProps {
+    label: string;
+    items: DropdownItem[];
+    className?: string;
+    mobile?: boolean;
+}
+declare const NavbarDropdown: ({ label, items, className, mobile }: NavbarDropdownProps) => react_jsx_runtime.JSX.Element;
 
 interface SidebarItem {
     key: string;
@@ -586,5 +607,5 @@ interface SnackbarItemProps {
 }
 declare const SnackbarItem: React__default.FC<SnackbarItemProps>;
 
-export { Button, Card, CardBody, CardFooter, CardHeader, CardMedia, Container, Dialog, Grid, GridItem, Input, Modal, Navbar, Select, Sidebar, SnackbarContainer, SnackbarItem, TextField, ThemeContext, ThemeProvider, Tooltip, cn, cssTransitions, darkTheme, defaultTheme, email, lightTheme, maxLength, mergeTheme, minLength, motionVariants, numeric, pattern, required, url, useMediaQuery, useSnackbar, useTheme, validate };
-export type { ButtonProps, CardBodyProps, CardElevation, CardFooterProps, CardHeaderProps, CardMediaProps, CardProps, CardRadius, CardVariant, ContainerProps, DeepPartial, DialogProps, GridItemProps, GridProps, InputProps, InputSize, ModalProps, ModalSize, MotionVariantKey, NavbarProps, SelectOption, SelectProps, SelectSize, SidebarProps, SnackbarContainerProps, SnackbarItemProps, SnackbarMessage$1 as SnackbarMessage, SnackbarSeverity, TextFieldProps, Theme, ThemeBorderRadius, ThemeColors, ThemeContextValue, ThemeMode, ThemeProviderProps, ThemeSemanticColors, ThemeShadow, ThemeSpacing, ThemeTypography, TooltipProps, UseSnackbarReturn, UserTheme, ValidationResult, ValidationRule };
+export { Button, Card, CardBody, CardFooter, CardHeader, CardMedia, Container, Dialog, Grid, GridItem, Input, Modal, Navbar, NavbarDropdown, Select, Sidebar, SnackbarContainer, SnackbarItem, TextField, ThemeContext, ThemeProvider, Tooltip, cn, cssTransitions, darkTheme, defaultTheme, email, lightTheme, maxLength, mergeTheme, minLength, motionVariants, numeric, pattern, required, url, useMediaQuery, useSnackbar, useTheme, validate };
+export type { ButtonProps, CardBodyProps, CardElevation, CardFooterProps, CardHeaderProps, CardMediaProps, CardProps, CardRadius, CardVariant, ContainerProps, DeepPartial, DialogProps, DropdownItem, GridItemProps, GridProps, InputProps, InputSize, ModalProps, ModalSize, MotionVariantKey, NavbarDropdownProps, NavbarProps, SelectOption, SelectProps, SelectSize, SidebarProps, SnackbarContainerProps, SnackbarItemProps, SnackbarMessage$1 as SnackbarMessage, SnackbarSeverity, TextFieldProps, Theme, ThemeBorderRadius, ThemeColors, ThemeContextValue, ThemeMode, ThemeProviderProps, ThemeSemanticColors, ThemeShadow, ThemeSpacing, ThemeTypography, TooltipProps, UseSnackbarReturn, UserTheme, ValidationResult, ValidationRule };

@@ -18,7 +18,7 @@ const NavbarBrand: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => (
   <div
     className={cn(
-      "flex text-lg font-bold text-text-primary no-underline items-center gap-3 tracking-tight min-w-0 sm:min-w-[160px] text-[var(--it-text-primary,#111)]",
+      "flex min-w-0 shrink-0 items-center gap-3 text-lg font-bold tracking-tight text-text-primary text-[var(--it-text-primary,#111)] no-underline lg:min-w-[160px]",
       className
     )}
     {...props}
@@ -68,6 +68,8 @@ const HamburgerIcon = () => (
     viewBox="0 0 24 24"
     stroke="currentColor"
     strokeWidth="1.8"
+    className="h-6 w-6"
+    aria-hidden="true"
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 7H20" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M4 12H20" />
@@ -84,6 +86,8 @@ const CloseIcon = () => (
     viewBox="0 0 24 24"
     stroke="currentColor"
     strokeWidth="1.8"
+    className="h-6 w-6"
+    aria-hidden="true"
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 6L18 18M6 18L18 6" />
   </svg>
@@ -177,33 +181,36 @@ export const Navbar: React.FC<NavbarProps> & {
     >
       {/* ── Inner layout ──────────────────────────────────────────────── */}
       <div
-        className="w-full h-full mx-auto px-0 sm:px-2 overflow-visible"
+        className="mx-auto h-full w-full overflow-visible px-0 sm:px-2"
         style={maxWidth ? { maxWidth } : undefined}
       >
-        <div className="grid grid-cols-[minmax(120px,auto)_1fr_auto] lg:flex lg:items-center lg:justify-between w-full h-full items-center overflow-visible">
+        <div className="grid h-full w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 overflow-visible lg:flex lg:justify-between">
 
           {/* LEFT — Brand */}
-          <div className="flex items-center">{brandSection}</div>
+          <div className="flex min-w-0 items-center justify-start lg:shrink-0">{brandSection}</div>
 
           {/* CENTER — hamburger (mobile) / nav links (desktop) */}
-          <div className="flex items-center justify-center overflow-visible flex-1">
+          <div className="flex items-center justify-center lg:hidden">
             <button
-              className="flex lg:hidden items-center justify-center rounded-xl p-2 transition hover:bg-black/5"
+              type="button"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl p-0 text-text-primary transition hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             >
               {isMobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
             </button>
+          </div>
 
+          <div className="hidden min-w-0 flex-1 items-center justify-center overflow-visible lg:flex">
             {navSection}
           </div>
 
           {/* RIGHT — mobileAction (mobile) / end section (desktop) */}
-          <div className="flex items-center justify-end gap-3 overflow-visible">
+          <div className="flex shrink-0 items-center justify-end gap-2 overflow-visible lg:gap-3">
             {/* mobileAction: shown only on mobile, hidden on desktop */}
             {mobileAction && (
-              <div className="flex lg:hidden">{mobileAction}</div>
+              <div className="inline-flex shrink-0 items-center lg:hidden">{mobileAction}</div>
             )}
             {endSection}
           </div>
@@ -218,8 +225,9 @@ export const Navbar: React.FC<NavbarProps> & {
           "bg-[var(--it-bg-paper,#fff)]",
           "overflow-hidden transition-all duration-300",
           bordered && "border-b border-[var(--it-border-default,#e5e7eb)]",
-          isMobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          isMobileMenuOpen ? "pointer-events-auto max-h-[500px] opacity-100" : "pointer-events-none max-h-0 opacity-0"
         )}
+        aria-hidden={!isMobileMenuOpen}
       >
         <div className="px-4 py-5 sm:px-6">{mobileMenu}</div>
       </div>
